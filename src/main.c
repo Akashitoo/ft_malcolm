@@ -24,8 +24,12 @@ int main(int argc, char **argv)
 		int b = recvfrom(sock, buffer, 1518, 0, NULL, NULL);
 		if (b > 0)
 		{
-			printf("trame recu \n");
-			printf("%d%d\n", buffer[12], buffer[13]);
+			if (buffer[12] == 8 && buffer[13] == 6)
+			{
+				printf("An ARP request has been broadcast.\n");
+				printf("	mac address of request: %X:%X:%X:%X:%X:%X\n", buffer[6], buffer[7],buffer[8],buffer[9],buffer[10],buffer[11]);
+				printf("	IP address of request: %d:%d:%d:%d\n", buffer[28], buffer[29], buffer[30],  buffer[31]);
+			}
 			return 1;
 		}
 	}
