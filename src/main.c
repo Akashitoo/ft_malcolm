@@ -25,6 +25,7 @@ int main(int argc, char **argv)
 		if (b > 0)
 		{
 			printf("trame recu \n");
+			printf("%d%d\n", buffer[12], buffer[13]);
 			return 1;
 		}
 	}
