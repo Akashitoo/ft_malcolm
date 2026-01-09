@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 
 	if (argc != 5)
 		return 1;
-		
+
 	if (getuid() != 0)
 	{
     	fprintf(stderr, "Vous devez être root pour exécuter ce programme\n");
@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 	
 	int sock = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
 	if (sock < 0)
-		printf("erreur\n");
+		printf("socket : %s\n", strerror(errno));
 	while (!g_stop)
 	{
 		int b = recvfrom(sock, buffer, 1518, 0, NULL, NULL);
@@ -34,10 +34,10 @@ int main(int argc, char **argv)
 			if (buffer[12] == 8 && buffer[13] == 6)
 			{
 				printf("An ARP request has been broadcast.\n");
-				printf("	mac address of request: %X:%X:%X:%X:%X:%X\n", buffer[6], buffer[7],buffer[8],buffer[9],buffer[10],buffer[11]);
+				printf("	mac address of request: %02X:%02X:%02X:%02X:%02X:%02X\n", buffer[6], buffer[7],buffer[8],buffer[9],buffer[10],buffer[11]);
 				printf("	IP address of request: %d:%d:%d:%d\n", buffer[28], buffer[29], buffer[30],  buffer[31]);
 			}
-			return 1;
+			return 0;
 		}
 	}
 
