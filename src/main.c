@@ -16,6 +16,13 @@ int main(int argc, char **argv)
 
 	if (argc != 5)
 		return 1;
+		
+	if (getuid() != 0)
+	{
+    	fprintf(stderr, "Vous devez être root pour exécuter ce programme\n");
+    return 1;
+	}
+	
 	int sock = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
 	if (sock < 0)
 		printf("erreur\n");
