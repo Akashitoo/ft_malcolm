@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 		{
 			if (buffer[12] == 8 && buffer[13] == 6)
 			{
-				printf("Found available interface: %s", if_idxtoname(addr.sll_ifindex));
+				printf("Found available interface: %s\n", if_idxtoname(addr.sll_ifindex));
 				printf("An ARP request has been broadcast.\n");
 				printf("	mac address of request: %02X:%02X:%02X:%02X:%02X:%02X\n", buffer[6], buffer[7],buffer[8],buffer[9],buffer[10],buffer[11]);
 				printf("	IP address of request: %d:%d:%d:%d\n", buffer[28], buffer[29], buffer[30],  buffer[31]);
