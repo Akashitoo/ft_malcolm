@@ -6,7 +6,7 @@ SRCS = ./src/main.c
 FLAGS = -Wall -Wextra -Werror
 
 all:$(SRCS)
-		gcc $(FLAGS) -I./include $(SRCS) -o $(NAME)
+		gcc $(FLAGS) -I./include $(SRCS) -o $(NAME) ./include/libft.a
 
 clean:rm -rf *.o
 
