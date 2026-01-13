@@ -55,13 +55,14 @@ int main(int argc, char **argv)
     return 1;
 	}
 
-	if(inet_pton(AF_INET, argv[1], &target_ip) < 0)
+	if(inet_pton(AF_INET, argv[1], &target_ip) != 1)
 	{
 		fprintf(stderr,"ft_malcolm: unknown host or invalid IP address: %s \n", argv[1]);
 		return (1);
 	}
-	printf("%u\n", target_ip.s_addr); 
-	if(inet_pton(AF_INET, argv[1], &source_ip) < 0)
+
+	printf("%u\n", target_ip.s_addr);
+	if(inet_pton(AF_INET, argv[2], &source_ip) != 1)
 	{
 		fprintf(stderr,"ft_malcolm: unknown host or invalid IP address: %s \n", argv[2]);
 		return (1);
