@@ -4,8 +4,9 @@ int g_stop = 0;
 
 void handler(int sig)
 {
-	printf("\nSignal reçu\n", sig);
+	printf("\nSignal reçu\n");
 	g_stop = 1;
+	(void) sig;
 }
 
 char *if_idxtoname(int index)
