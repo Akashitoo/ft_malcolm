@@ -4,7 +4,7 @@ int g_stop = 0;
 
 void handler(int sig)
 {
-	printf("\nSignal reçu:%d\n", sig);
+	printf("\nSignal reçu: ^C\n", sig);
 	g_stop = 1;
 }
 
