@@ -36,6 +36,7 @@ char *if_idxtoname(int index)
 	return NULL;
 }
 
+
 int main(int argc, char **argv)
 {
 	signal(SIGINT, handler);
@@ -43,6 +44,7 @@ int main(int argc, char **argv)
 	unsigned char buffer[1518];
 	struct sockaddr_ll addr;
 	socklen_t addr_len = sizeof(addr);
+	struct in_addr target_ip, source_ip;
 
 	if (argc != 5)
 		return 1;
@@ -52,10 +54,22 @@ int main(int argc, char **argv)
     	fprintf(stderr, "Vous devez être root pour exécuter ce programme\n");
     return 1;
 	}
-	
+
+	if(inet_pton(AF_INET, argv[1], &target_ip) < 0)
+	{
+		fprintf(stderr,"ft_malcolm: unknown host or invalid IP address: %s \n", argv[1]);
+		return (1);
+	}
+	printf("%u\n", target_ip.s_addr); 
+	if(inet_pton(AF_INET, argv[1], &source_ip) < 0)
+	{
+		fprintf(stderr,"ft_malcolm: unknown host or invalid IP address: %s \n", argv[2]);
+		return (1);
+	}
+	printf("%u\n", source_ip.s_addr); 
 	int sock = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
 	if (sock < 0)
-		printf("socket : %s\n", strerror(errno));
+		fprintf( stderr, "socket : %s\n", strerror(errno));
 	while (!g_stop)
 	{
 		int b = recvfrom(sock, buffer, 1518, 0, (struct sockaddr *)&addr, &addr_len);
@@ -63,14 +77,18 @@ int main(int argc, char **argv)
 		{
 			if (buffer[12] == 8 && buffer[13] == 6)
 			{
-				printf("Found available interface: %s\n", if_idxtoname(addr.sll_ifindex));
+				char *name = if_idxtoname(addr.sll_ifindex);
+				printf("Found available interface: %s\n", name);
 				printf("An ARP request has been broadcast.\n");
 				printf("	mac address of request: %02X:%02X:%02X:%02X:%02X:%02X\n", buffer[6], buffer[7],buffer[8],buffer[9],buffer[10],buffer[11]);
 				printf("	IP address of request: %d:%d:%d:%d\n", buffer[28], buffer[29], buffer[30],  buffer[31]);
+
+				free(name);
+				close(sock);
 			}
 			return 0;
 		}
 	}
-
+	close(sock);
 	(void)argv;
 }
