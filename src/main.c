@@ -37,6 +37,40 @@ char *if_idxtoname(int index)
 	return NULL;
 }
 
+int hex_to_dec(char c)
+{
+	char hex_maj[17] = "0123456789ABCDEF";
+	char hex_min[17] = "0123456789abcdef";
+	for (int i=0; i < 16; i++)
+	{
+		if (c == hex_maj[i] || c == hex_min[i])
+			return (i);
+	}
+	return (-1);
+}
+
+int convert_mac(char *mac_str, int **mac_tab)
+{
+	char **mac_split;
+	int convert;
+	int res;
+	mac_split = ft_split(mac_str, '.');
+	if (ARRAY_SIZE(mac_split) != 6)
+		return(0);
+	for (int i=0; mac_split[i]; i++)
+	{
+		res = 0;
+		for (int j=0; mac_split[i][j]; j++)
+		{
+			convert = hex_to_dec(mac_split[i][j]);
+			if (convert == -1)
+				return (0);
+			res  = res * 10 + convert;
+		}
+		mac_tab[i] = res;
+	}
+	return (1);
+}
 
 int main(int argc, char **argv)
 {
@@ -46,9 +80,14 @@ int main(int argc, char **argv)
 	struct sockaddr_ll addr;
 	socklen_t addr_len = sizeof(addr);
 	struct in_addr target_ip, source_ip;
+	int target_mac[6];
+	int source_mac[6];
 
 	if (argc != 5)
+	{
+		printf("Wrong arugments\n");
 		return 1;
+	}
 
 	if (getuid() != 0)
 	{
@@ -56,22 +95,35 @@ int main(int argc, char **argv)
     return 1;
 	}
 
-	if(inet_pton(AF_INET, argv[1], &target_ip) != 1)
+	if(inet_pton(AF_INET, argv[1], &source_ip) != 1)
 	{
 		fprintf(stderr,"ft_malcolm: unknown host or invalid IP address: %s \n", argv[1]);
 		return (1);
 	}
 
-	printf("%u\n", target_ip.s_addr);
-	if(inet_pton(AF_INET, argv[2], &source_ip) != 1)
+	if (convert_mac(argv[2], &source_mac) != 1)
 	{
-		fprintf(stderr,"ft_malcolm: unknown host or invalid IP address: %s \n", argv[2]);
+		fprintf(stderr,"ft_malcolm: invalid mac address: %s \n", argv[2]);
+		return (1);	
+	}
+
+	if(inet_pton(AF_INET, argv[3], &target_ip) != 1)
+	{
+		fprintf(stderr,"ft_malcolm: unknown host or invalid IP address: %s \n", argv[3]);
 		return (1);
 	}
-	printf("%u\n", source_ip.s_addr); 
+
+	if (convert_mac(argv[4], &target_mac) != 1)
+	{
+		fprintf(stderr,"ft_malcolm: invalid mac address: %s \n", argv[4]);
+		return (1);	
+	}
+
 	int sock = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
 	if (sock < 0)
 		fprintf( stderr, "socket : %s\n", strerror(errno));
+
+
 	//struct timeval tv;
 	//tv.tv_sec = 1;
 	//tv.tv_usec = 0;
