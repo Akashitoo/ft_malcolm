@@ -55,17 +55,19 @@ int convert_mac(char *mac_str, int *mac_tab)
 	int convert;
 	int res;
 	mac_split = ft_split(mac_str, '.');
-	if (ARRAY_SIZE(mac_split) != 6)
-		return(0);
 	for (int i=0; mac_split[i]; i++)
 	{
+		if (i > 5)
+			return (0);
 		res = 0;
 		for (int j=0; mac_split[i][j]; j++)
 		{
+			if (j > 1)
+				return (0);
 			convert = hex_to_dec(mac_split[i][j]);
 			if (convert == -1)
 				return (0);
-			res  = res * 10 + convert;
+			res  = res * 16 + convert;
 		}
 		mac_tab[i] = res;
 	}
