@@ -76,8 +76,10 @@ int main(int argc, char **argv)
 	//tv.tv_sec = 1;
 	//tv.tv_usec = 0;
 	//setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+	printf("ca passe la \n");
 	while (!g_stop)
 	{
+		printf("ca rentre dans la boucle\n");
 		int b = recvfrom(sock, buffer, 1518, 0, (struct sockaddr *)&addr, &addr_len);
 		if (b > 0)
 		{
