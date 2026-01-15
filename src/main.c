@@ -72,6 +72,10 @@ int main(int argc, char **argv)
 	int sock = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
 	if (sock < 0)
 		fprintf( stderr, "socket : %s\n", strerror(errno));
+	//struct timeval tv;
+	//tv.tv_sec = 1;
+	//tv.tv_usec = 0;
+	//setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
 	while (!g_stop)
 	{
 		int b = recvfrom(sock, buffer, 1518, 0, (struct sockaddr *)&addr, &addr_len);

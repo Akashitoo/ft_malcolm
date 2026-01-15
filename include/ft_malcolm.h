@@ -15,6 +15,7 @@
 # include <ifaddrs.h>
 # include <netinet/in.h>
 # include <net/if.h>
+# include <sys/time.h>
 # include "libft.h"
 
 #endif
