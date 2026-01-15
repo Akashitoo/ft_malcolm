@@ -49,7 +49,7 @@ int hex_to_dec(char c)
 	return (-1);
 }
 
-int convert_mac(char *mac_str, int **mac_tab)
+int convert_mac(char *mac_str, int *mac_tab)
 {
 	char **mac_split;
 	int convert;
@@ -101,7 +101,7 @@ int main(int argc, char **argv)
 		return (1);
 	}
 
-	if (convert_mac(argv[2], &source_mac) != 1)
+	if (convert_mac(argv[2], source_mac) != 1)
 	{
 		fprintf(stderr,"ft_malcolm: invalid mac address: %s \n", argv[2]);
 		return (1);	
@@ -113,7 +113,7 @@ int main(int argc, char **argv)
 		return (1);
 	}
 
-	if (convert_mac(argv[4], &target_mac) != 1)
+	if (convert_mac(argv[4], target_mac) != 1)
 	{
 		fprintf(stderr,"ft_malcolm: invalid mac address: %s \n", argv[4]);
 		return (1);	
