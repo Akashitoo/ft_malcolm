@@ -54,7 +54,7 @@ int convert_mac(char *mac_str, int *mac_tab)
 	char **mac_split;
 	int convert;
 	int res;
-	mac_split = ft_split(mac_str, '.');
+	mac_split = ft_split(mac_str, ':');
 	for (int i=0; mac_split[i]; i++)
 	{
 		if (i > 5)
