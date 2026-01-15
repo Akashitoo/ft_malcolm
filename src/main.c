@@ -48,6 +48,16 @@ int hex_to_dec(char c)
 	}
 	return (-1);
 }
+void free_tab(char **tab)
+{
+	int i = 0;
+	while(tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
 
 int convert_mac(char *mac_str, int *mac_tab)
 {
@@ -63,14 +73,21 @@ int convert_mac(char *mac_str, int *mac_tab)
 		for (int j=0; mac_split[i][j]; j++)
 		{
 			if (j > 1)
+			{
+				free_tab(mac_split);
 				return (0);
+			}
 			convert = hex_to_dec(mac_split[i][j]);
 			if (convert == -1)
+			{
+				free_tab(mac_split);
 				return (0);
+			}
 			res  = res * 16 + convert;
 		}
 		mac_tab[i] = res;
 	}
+	free_tab(mac_split);
 	return (1);
 }
 
