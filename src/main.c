@@ -164,6 +164,8 @@ int main(int argc, char **argv)
 
 				ft_memcpy(buffer, target_mac, 6);
 				ft_memcpy(&buffer[6], source_mac, 6);
+				buffer[12] = 0x08;
+				buffer[13] = 0x06;
 				buffer[14] = 0x00;
 				buffer[15] = 0x01;
 				buffer[16] = 0x08;
