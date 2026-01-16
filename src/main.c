@@ -99,8 +99,8 @@ int main(int argc, char **argv)
 	struct sockaddr_ll addr;
 	socklen_t addr_len = sizeof(addr);
 	struct in_addr target_ip, source_ip;
-	char target_mac[6];
-	char source_mac[6];
+	unsigned char target_mac[6];
+	unsigned char source_mac[6];
 
 	if (argc != 5)
 	{
