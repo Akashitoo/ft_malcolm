@@ -143,10 +143,10 @@ int main(int argc, char **argv)
 		fprintf( stderr, "socket : %s\n", strerror(errno));
 
 
-	struct timeval tv;
-	tv.tv_sec = 1;
-	tv.tv_usec = 0;
-	setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+	//struct timeval tv;
+	//tv.tv_sec = 1;
+	//tv.tv_usec = 0;
+	//setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
 	while (!g_stop)
 	{
 		int b = recvfrom(sock, buffer, 1518, 0, (struct sockaddr *)&addr, &addr_len);
