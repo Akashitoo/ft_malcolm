@@ -168,7 +168,7 @@ int main(int argc, char **argv)
 				ft_memcpy(&buffer[28], &(source_ip.s_addr), 4);
 				ft_memcpy(&buffer[32], target_mac, 6);
 				ft_memcpy(&buffer[38], &(target_ip.s_addr), 4);
-				sendto(sock, buffer, 1518, 0, (struct sockaddr *)&addr, &addr_len);
+				sendto(sock, buffer, 1518, 0, (struct sockaddr *)&addr, addr_len);
 				free(name);
 				close(sock);
 			}
