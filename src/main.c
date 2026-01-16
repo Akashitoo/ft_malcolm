@@ -59,7 +59,7 @@ void free_tab(char **tab)
 	free(tab);
 }
 
-int convert_mac(char *mac_str, unsigned int *mac_tab)
+int convert_mac(char *mac_str, char *mac_tab)
 {
 	char **mac_split;
 	int convert;
@@ -99,8 +99,8 @@ int main(int argc, char **argv)
 	struct sockaddr_ll addr;
 	socklen_t addr_len = sizeof(addr);
 	struct in_addr target_ip, source_ip;
-	unsigned int target_mac[6];
-	unsigned int source_mac[6];
+	char target_mac[6];
+	char source_mac[6];
 
 	if (argc != 5)
 	{
@@ -174,7 +174,7 @@ int main(int argc, char **argv)
 				buffer[19] = 4;
 				buffer[20] = 0x00;
 				buffer[21] = 0x02;
-				memcpy(&buffer[22],&source_mac[0], 6);
+				ft_memcpy(&buffer[22],&source_mac[0], 6);
 				ft_memcpy(&buffer[28], &(source_ip.s_addr), 4);
 				ft_memcpy(&buffer[32], &target_mac[0], 6);
 				ft_memcpy(&buffer[38], &(target_ip.s_addr), 4);
