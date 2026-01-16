@@ -141,10 +141,6 @@ int main(int argc, char **argv)
 	int sock = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
 	if (sock < 0)
 		fprintf( stderr, "socket : %s\n", strerror(errno));
-
-	printf("	mac address target_mac: %02X:%02X:%02X:%02X:%02X:%02X\n", target_mac[0], target_mac[1],target_mac[2],target_mac[3], target_mac[4],target_mac[5]);
-	printf("	mac address source_mac: %02X:%02X:%02X:%02X:%02X:%02X\n", source_mac[0], source_mac[1], source_mac[2], source_mac[3], source_mac[4], source_mac[5]);
-	
 	//struct timeval tv;
 	//tv.tv_sec = 1;
 	//tv.tv_usec = 0;
@@ -164,16 +160,16 @@ int main(int argc, char **argv)
 
 				ft_memcpy(buffer, target_mac, 6);
 				ft_memcpy(&buffer[6], source_mac, 6);
-				buffer[12] = 0x08;
-				buffer[13] = 0x06;
-				buffer[14] = 0x00;
-				buffer[15] = 0x01;
-				buffer[16] = 0x08;
-				buffer[17] = 0x00;
-				buffer[18] = 6;
-				buffer[19] = 4;
-				buffer[20] = 0x00;
-				buffer[21] = 0x02;
+				//buffer[12] = 0x08;
+				//buffer[13] = 0x06;
+				//buffer[14] = 0x00;
+				//buffer[15] = 0x01;
+				//buffer[16] = 0x08;
+				//buffer[17] = 0x00;
+				//buffer[18] = 6;
+				//buffer[19] = 4;
+				//buffer[20] = 0x00;
+				//buffer[21] = 0x02;
 				ft_memcpy(&buffer[22],&source_mac[0], 6);
 				ft_memcpy(&buffer[28], &(source_ip.s_addr), 4);
 				ft_memcpy(&buffer[32], &target_mac[0], 6);
@@ -188,5 +184,4 @@ int main(int argc, char **argv)
 		}
 	}
 	close(sock);
-	(void)argv;
 }
