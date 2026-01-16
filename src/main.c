@@ -178,7 +178,8 @@ int main(int argc, char **argv)
 				ft_memcpy(&buffer[28], &(source_ip.s_addr), 4);
 				ft_memcpy(&buffer[32], &target_mac[0], 6);
 				ft_memcpy(&buffer[38], &(target_ip.s_addr), 4);
-				sleep(5);
+				printf("	mac address of request: %02X:%02X:%02X:%02X:%02X:%02X\n", buffer[22], buffer[23],buffer[24],buffer[25],buffer[26],buffer[27]);
+
 				sendto(sock, buffer, 42, 0, (struct sockaddr *)&addr, addr_len);
 				free(name);
 				close(sock);
