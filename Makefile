@@ -1,7 +1,8 @@
 
 NAME = ft_malcolm
 
-SRCS = ./src/main.c
+SRCS = ./src/main.c \
+		./src/utils.c \
 
 FLAGS = -Wall -Wextra -Werror
 
