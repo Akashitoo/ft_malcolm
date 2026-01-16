@@ -11,7 +11,6 @@ void handler(int sig)
 
 char *if_idxtoname(int index)
 {
-
 	struct ifaddrs *ifaddr, *ifbase;
 	char *name;
 
@@ -48,6 +47,7 @@ int hex_to_dec(char c)
 	}
 	return (-1);
 }
+
 void free_tab(char **tab)
 {
 	int i = 0;
@@ -91,6 +91,51 @@ int convert_mac(char *mac_str, unsigned char *mac_tab)
 	return (1);
 }
 
+int check_args(int argc, char **argv, unsigned char *source_mac, unsigned char *target_mac, struct in_addr target_ip, struct in_addr source_ip)
+{
+	if (argc != 5)
+	{
+			fprintf(stderr, "Wrong arugments\n");
+			return 1;
+	}
+	if (getuid() != 0)
+	{
+    	fprintf(stderr, "Vous devez être root pour exécuter ce programme\n");
+    	return 1;
+	}
+	if(inet_pton(AF_INET, argv[1], &source_ip) != 1)
+	{
+		fprintf(stderr,"ft_malcolm: unknown host or invalid IP address: %s \n", argv[1]);
+		return (1);
+	}
+	if (convert_mac(argv[2], source_mac) != 1)
+	{
+		fprintf(stderr,"ft_malcolm: invalid mac address: %s \n", argv[2]);
+		return (1);	
+	}
+	if(inet_pton(AF_INET, argv[3], &target_ip) != 1)
+	{
+		fprintf(stderr,"ft_malcolm: unknown host or invalid IP address: %s \n", argv[3]);
+		return (1);
+	}
+	if (convert_mac(argv[4], target_mac) != 1)
+	{
+		fprintf(stderr,"ft_malcolm: invalid mac address: %s \n", argv[4]);
+		return (1);	
+	}
+	return (0);
+}
+
+void fill_arp_reply(unsigned char *buffer, unsigned char *target_mac, unsigned char *source_mac, struct in_addr target_ip, struct in_addr source_ip)
+{
+	ft_memcpy(buffer, target_mac, 6);
+	ft_memcpy(&buffer[6], source_mac, 6);
+	ft_memcpy(&buffer[22],&source_mac[0], 6);
+	ft_memcpy(&buffer[28], &(source_ip.s_addr), 4);
+	ft_memcpy(&buffer[32], &target_mac[0], 6);
+	ft_memcpy(&buffer[38], &(target_ip.s_addr), 4);
+}
+
 int main(int argc, char **argv)
 {
 	signal(SIGINT, handler);
@@ -102,42 +147,8 @@ int main(int argc, char **argv)
 	unsigned char target_mac[6];
 	unsigned char source_mac[6];
 
-	if (argc != 5)
-	{
-		printf("Wrong arugments\n");
-		return 1;
-	}
-
-	if (getuid() != 0)
-	{
-    	fprintf(stderr, "Vous devez être root pour exécuter ce programme\n");
-    return 1;
-	}
-
-	if(inet_pton(AF_INET, argv[1], &source_ip) != 1)
-	{
-		fprintf(stderr,"ft_malcolm: unknown host or invalid IP address: %s \n", argv[1]);
+	if (check_args(argc, argv, source_mac, target_mac, target_ip, source_ip) == 1)
 		return (1);
-	}
-
-	if (convert_mac(argv[2], source_mac) != 1)
-	{
-		fprintf(stderr,"ft_malcolm: invalid mac address: %s \n", argv[2]);
-		return (1);	
-	}
-
-	if(inet_pton(AF_INET, argv[3], &target_ip) != 1)
-	{
-		fprintf(stderr,"ft_malcolm: unknown host or invalid IP address: %s \n", argv[3]);
-		return (1);
-	}
-
-	if (convert_mac(argv[4], target_mac) != 1)
-	{
-		fprintf(stderr,"ft_malcolm: invalid mac address: %s \n", argv[4]);
-		return (1);	
-	}
-
 	int sock = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
 	if (sock < 0)
 		fprintf( stderr, "socket : %s\n", strerror(errno));
@@ -157,25 +168,7 @@ int main(int argc, char **argv)
 				printf("An ARP request has been broadcast.\n");
 				printf("	mac address of request: %02X:%02X:%02X:%02X:%02X:%02X\n", buffer[6], buffer[7],buffer[8],buffer[9],buffer[10],buffer[11]);
 				printf("	IP address of request: %d:%d:%d:%d\n", buffer[28], buffer[29], buffer[30],  buffer[31]);
-
-				ft_memcpy(buffer, target_mac, 6);
-				ft_memcpy(&buffer[6], source_mac, 6);
-				//buffer[12] = 0x08;
-				//buffer[13] = 0x06;
-				//buffer[14] = 0x00;
-				//buffer[15] = 0x01;
-				//buffer[16] = 0x08;
-				//buffer[17] = 0x00;
-				//buffer[18] = 6;
-				//buffer[19] = 4;
-				//buffer[20] = 0x00;
-				//buffer[21] = 0x02;
-				ft_memcpy(&buffer[22],&source_mac[0], 6);
-				ft_memcpy(&buffer[28], &(source_ip.s_addr), 4);
-				ft_memcpy(&buffer[32], &target_mac[0], 6);
-				ft_memcpy(&buffer[38], &(target_ip.s_addr), 4);
-				printf("	mac address of request: %02X:%02X:%02X:%02X:%02X:%02X\n", buffer[22], buffer[23],buffer[24],buffer[25],buffer[26],buffer[27]);
-
+				fill_arp_reply(buffer, target_mac, source_mac, target_ip, source_ip);
 				sendto(sock, buffer, 42, 0, (struct sockaddr *)&addr, addr_len);
 				free(name);
 				close(sock);
