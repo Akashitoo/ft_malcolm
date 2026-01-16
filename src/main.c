@@ -143,6 +143,8 @@ int main(int argc, char **argv)
 		fprintf( stderr, "socket : %s\n", strerror(errno));
 
 	printf("	mac address target_mac: %02X:%02X:%02X:%02X:%02X:%02X\n", target_mac[0], target_mac[1],target_mac[2],target_mac[3], target_mac[4],target_mac[5]);
+	printf("	mac address source_mac: %02X:%02X:%02X:%02X:%02X:%02X\n", source_mac[0], source_mac[1], source_mac[2], source_mac[3], source_mac[4], source_mac[5]);
+	
 	//struct timeval tv;
 	//tv.tv_sec = 1;
 	//tv.tv_usec = 0;
