@@ -91,7 +91,7 @@ int convert_mac(char *mac_str, unsigned char *mac_tab)
 	return (1);
 }
 
-int check_args(int argc, char **argv, unsigned char *source_mac, unsigned char *target_mac, struct in_addr target_ip, struct in_addr source_ip)
+int check_args(int argc, char **argv, unsigned char *source_mac, unsigned char *target_mac, struct in_addr *target_ip, struct in_addr *source_ip)
 {
 	if (argc != 5)
 	{
@@ -103,7 +103,7 @@ int check_args(int argc, char **argv, unsigned char *source_mac, unsigned char *
     	fprintf(stderr, "Vous devez être root pour exécuter ce programme\n");
     	return 1;
 	}
-	if(inet_pton(AF_INET, argv[1], &source_ip) != 1)
+	if(inet_pton(AF_INET, argv[1], source_ip) != 1)
 	{
 		fprintf(stderr,"ft_malcolm: unknown host or invalid IP address: %s \n", argv[1]);
 		return (1);
@@ -113,7 +113,7 @@ int check_args(int argc, char **argv, unsigned char *source_mac, unsigned char *
 		fprintf(stderr,"ft_malcolm: invalid mac address: %s \n", argv[2]);
 		return (1);	
 	}
-	if(inet_pton(AF_INET, argv[3], &target_ip) != 1)
+	if(inet_pton(AF_INET, argv[3], target_ip) != 1)
 	{
 		fprintf(stderr,"ft_malcolm: unknown host or invalid IP address: %s \n", argv[3]);
 		return (1);
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 	unsigned char target_mac[6];
 	unsigned char source_mac[6];
 
-	if (check_args(argc, argv, source_mac, target_mac, target_ip, source_ip) == 1)
+	if (check_args(argc, argv, source_mac, target_mac, &target_ip, &source_ip) == 1)
 		return (1);
 	int sock = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
 	if (sock < 0)
