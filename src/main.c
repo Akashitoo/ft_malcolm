@@ -147,10 +147,8 @@ int main(int argc, char **argv)
 	tv.tv_sec = 1;
 	tv.tv_usec = 0;
 	setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
-	printf("ca passe la \n");
 	while (!g_stop)
 	{
-		printf("ca rentre dans la boucle\n");
 		int b = recvfrom(sock, buffer, 1518, 0, (struct sockaddr *)&addr, &addr_len);
 		if (b > 0)
 		{
@@ -162,6 +160,15 @@ int main(int argc, char **argv)
 				printf("	mac address of request: %02X:%02X:%02X:%02X:%02X:%02X\n", buffer[6], buffer[7],buffer[8],buffer[9],buffer[10],buffer[11]);
 				printf("	IP address of request: %d:%d:%d:%d\n", buffer[28], buffer[29], buffer[30],  buffer[31]);
 
+				ft_memcpy(buffer, target_mac, 6);
+				ft_memcpy(&buffer[6], source_mac, 6);
+				buffer[20] = 0;
+				buffer[21] = 2;
+				ft_memcpy(&buffer[22],source_mac, 6);
+				ft_memcpy(&buffer[28], &(source_ip.s_addr), 4);
+				ft_memcpy(&buffer[32], target_mac, 6);
+				ft_memcpy(&buffer[38], &(target_ip.s_addr), 4);
+				sendto(sock, buffer, 1518, 0, (struct sockaddr *)&addr, &addr_len);
 				free(name);
 				close(sock);
 			}
