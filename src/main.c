@@ -174,7 +174,7 @@ int main(int argc, char **argv)
 				buffer[19] = 4;
 				buffer[20] = 0x00;
 				buffer[21] = 0x02;
-				ft_memcpy(&buffer[22],&source_mac[0], 6);
+				memcpy(&buffer[22],&source_mac[0], 6);
 				ft_memcpy(&buffer[28], &(source_ip.s_addr), 4);
 				ft_memcpy(&buffer[32], &target_mac[0], 6);
 				ft_memcpy(&buffer[38], &(target_ip.s_addr), 4);
