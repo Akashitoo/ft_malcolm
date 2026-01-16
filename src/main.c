@@ -59,7 +59,7 @@ void free_tab(char **tab)
 	free(tab);
 }
 
-int convert_mac(char *mac_str, char *mac_tab)
+int convert_mac(char *mac_str, unsigned char *mac_tab)
 {
 	char **mac_split;
 	int convert;
