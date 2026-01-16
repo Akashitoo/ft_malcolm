@@ -164,14 +164,20 @@ int main(int argc, char **argv)
 
 				ft_memcpy(buffer, target_mac, 6);
 				ft_memcpy(&buffer[6], source_mac, 6);
-				buffer[20] = 0;
-				buffer[21] = 2;
+				buffer[14] = 0x00;
+				buffer[15] = 0x01;
+				buffer[16] = 0x08;
+				buffer[17] = 0x00;
+				buffer[18] = 6;
+				buffer[19] = 4;
+				buffer[20] = 0x00;
+				buffer[21] = 0x02;
 				ft_memcpy(&buffer[22],source_mac, 6);
 				ft_memcpy(&buffer[28], &(source_ip.s_addr), 4);
 				ft_memcpy(&buffer[32], target_mac, 6);
 				ft_memcpy(&buffer[38], &(target_ip.s_addr), 4);
 				sleep(5);
-				sendto(sock, buffer, 1518, 0, (struct sockaddr *)&addr, addr_len);
+				sendto(sock, buffer, 42, 0, (struct sockaddr *)&addr, addr_len);
 				free(name);
 				close(sock);
 				return 0;
