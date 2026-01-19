@@ -1,13 +1,18 @@
 
 NAME = ft_malcolm
 
+FLAGS = -Wall -Wextra -Werror
+
 SRCS = ./src/main.c \
 		./src/utils.c \
 
-FLAGS = -Wall -Wextra -Werror
+OBJS = $(SRCS:.c=.o)
 
-all:$(SRCS)
-		gcc $(FLAGS) -I./include $(SRCS) -o $(NAME) ./include/libft.a -g
+%.o: %.c
+	gcc $(FLAGS) -I./include -c $< -o $@
+
+all: $(OBJS)
+	gcc $(FLAGS) -I./include $(OBJS) -o $(NAME) ./include/libft.a -g
 
 clean:
 	rm -rf *.o
@@ -15,5 +20,6 @@ clean:
 fclean: clean
 	rm -rf $(NAME)
 
-re : fclean all
+re: fclean all
 
+.PHONY: all clean fclean re 
