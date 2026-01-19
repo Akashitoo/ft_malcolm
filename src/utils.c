@@ -63,7 +63,7 @@ int convert_mac(char *mac_str, unsigned char *mac_tab)
 		res = 0;
 		for (int j=0; mac_split[i][j]; j++)
 		{
-			if (j > 1)
+			if (ft_strlen(mac_split[i]) != 2)
 			{
 				free_tab(mac_split);
 				return (0);
