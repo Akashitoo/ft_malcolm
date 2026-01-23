@@ -145,15 +145,17 @@ int compare_ip(unsigned char *buffer, struct in_addr ip)
 	ip_usc[1] = (ip.s_addr << 16) &0xFF;
 	ip_usc[2] = (ip.s_addr << 8) &0xFF;
 	ip_usc[3] = ip.s_addr &0xFF;
-
+	int flag = 0;
 	for (int i=0; i < 4; i++)
 	{
 		printf("%d : %d\n", buffer[i], ip_usc[i]);
 		if (buffer[i] != ip_usc[i])
 		{
-			return 0;
+			flag = 1;
 		}
 
 	}
+	if (flag)
+		return 0;
 	return 1;
 }
