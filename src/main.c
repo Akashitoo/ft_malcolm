@@ -37,11 +37,10 @@ int	main(int argc, char **argv)
 		{
 			if (buffer[12] == 8 && buffer[13] == 6)
 			{
-				if (compare_ip(&buffer[28], target_ip))
+				if (compare_ip(&buffer[28], target_ip) && compare_ip(&buffer[38], source_ip) && compare_mac(&buffer[22], target_mac))
 				{
 					receive_arp(addr, buffer);
 					fill_arp_reply(buffer, target_mac, source_mac, target_ip, source_ip);
-					sleep(3);
 					sendto(sock, buffer, 42, 0, (struct sockaddr *)&addr, addr_len);
 					close(sock);
 					return 0;

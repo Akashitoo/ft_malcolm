@@ -149,8 +149,17 @@ int compare_ip(unsigned char *buffer, struct in_addr ip)
 
 	for (int i=0; i < 4; i++)
 	{
-		printf("%d : %d\n", buffer[i], ip_usc[i]);
 		if (buffer[i] != ip_usc[i])
+			return 0;
+	}
+	return 1;
+}
+
+int compare_mac(unsigned char *buffer, unsigned char *mac)
+{
+	for (int i=0; i < 6; i++)
+	{
+		if (buffer[i] != mac[i])
 			return 0;
 	}
 	return 1;
