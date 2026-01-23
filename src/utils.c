@@ -148,9 +148,9 @@ int compare_ip(unsigned char *buffer, struct in_addr ip)
 
 	for (int i=0; i < 4; i++)
 	{
+		printf("%d : %d\n", buffer[i], ip_usc[i]);
 		if (buffer[i] != ip_usc[i])
 		{
-			printf("fails\n");
 			return 0;
 		}
 
