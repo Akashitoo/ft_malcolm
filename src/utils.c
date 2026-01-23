@@ -140,11 +140,13 @@ void	receive_arp(struct sockaddr_ll addr, unsigned char *buffer)
 
 int compare_ip(unsigned char *buffer, struct in_addr ip)
 {
-	unsigned char ip_usc[4];
-	ip_usc[0] = (ip.s_addr >> 24) &0xFF;
-	ip_usc[1] = (ip.s_addr >> 16) &0xFF;
-	ip_usc[2] = (ip.s_addr >> 8) &0xFF;
-	ip_usc[3] = ip.s_addr &0xFF;
+	unsigned char *ip_usc;
+
+	ip_usc = (unsigned char *)ip.s_addr;
+	//ip_usc[0] = (ip.s_addr >> 24) &0xFF;
+	//ip_usc[1] = (ip.s_addr >> 16) &0xFF;
+	//ip_usc[2] = (ip.s_addr >> 8) &0xFF;
+	//ip_usc[3] = ip.s_addr &0xFF;
 	int flag = 0;
 	for (int i=0; i < 4; i++)
 	{
