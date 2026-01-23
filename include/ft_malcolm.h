@@ -25,6 +25,7 @@ int	hex_to_dec(char c);
 int	convert_mac(char *mac_str, unsigned char *mac_tab);
 int	check_args(int argc, char **argv, unsigned char *source_mac, unsigned char *target_mac, struct in_addr *target_ip, struct in_addr *source_ip);
 int	compare_ip(unsigned char *buffer, struct in_addr ip);
+int	compare_mac(unsigned char *buffer, unsigned char *mac);
 
 void	free_tab(char **tab);
 void	fill_arp_reply(unsigned char *buffer, unsigned char *target_mac, unsigned char *source_mac, struct in_addr target_ip, struct in_addr source_ip);
