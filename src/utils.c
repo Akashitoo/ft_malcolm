@@ -1,6 +1,6 @@
 #include "ft_malcolm.h"
 
-char *if_idxtoname(int index)
+char	*if_idxtoname(int index)
 {
 	struct ifaddrs *ifaddr, *ifbase;
 	char *name;
@@ -27,7 +27,7 @@ char *if_idxtoname(int index)
 	return NULL;
 }
 
-int hex_to_dec(char c)
+int	hex_to_dec(char c)
 {
 	char hex_maj[17] = "0123456789ABCDEF";
 	char hex_min[17] = "0123456789abcdef";
@@ -39,7 +39,7 @@ int hex_to_dec(char c)
 	return (-1);
 }
 
-void free_tab(char **tab)
+void	free_tab(char **tab)
 {
 	int i = 0;
 	while(tab[i])
@@ -50,7 +50,7 @@ void free_tab(char **tab)
 	free(tab);
 }
 
-int convert_mac(char *mac_str, unsigned char *mac_tab)
+int	convert_mac(char *mac_str, unsigned char *mac_tab)
 {
 	char **mac_split;
 	int convert;
@@ -82,7 +82,7 @@ int convert_mac(char *mac_str, unsigned char *mac_tab)
 	return (1);
 }
 
-int check_args(int argc, char **argv, unsigned char *source_mac, unsigned char *target_mac, struct in_addr *target_ip, struct in_addr *source_ip)
+int	check_args(int argc, char **argv, unsigned char *source_mac, unsigned char *target_mac, struct in_addr *target_ip, struct in_addr *source_ip)
 {
 	if (argc != 5)
 	{
@@ -117,7 +117,7 @@ int check_args(int argc, char **argv, unsigned char *source_mac, unsigned char *
 	return (0);
 }
 
-void fill_arp_reply(unsigned char *buffer, unsigned char *target_mac, unsigned char *source_mac, struct in_addr target_ip, struct in_addr source_ip)
+void	fill_arp_reply(unsigned char *buffer, unsigned char *target_mac, unsigned char *source_mac, struct in_addr target_ip, struct in_addr source_ip)
 {
 	ft_memcpy(buffer, target_mac, 6);
 	ft_memcpy(&buffer[6], source_mac, 6);
@@ -127,7 +127,7 @@ void fill_arp_reply(unsigned char *buffer, unsigned char *target_mac, unsigned c
 	ft_memcpy(&buffer[38], &(target_ip.s_addr), 4);
 }
 
-void receive_arp(struct sockaddr_ll addr, unsigned char *buffer)
+void	receive_arp(struct sockaddr_ll addr, unsigned char *buffer)
 {
 	char *name = if_idxtoname(addr.sll_ifindex);
 	printf("Found available interface: %s\n", name);
@@ -135,4 +135,12 @@ void receive_arp(struct sockaddr_ll addr, unsigned char *buffer)
 	printf("	mac address of request: %02X:%02X:%02X:%02X:%02X:%02X\n", buffer[6], buffer[7],buffer[8],buffer[9],buffer[10],buffer[11]);
 	printf("	IP address of request: %d:%d:%d:%d\n", buffer[28], buffer[29], buffer[30],  buffer[31]);
 	free(name);
+}
+
+
+int compare_ip(char *buffer, struct in_addr ip)
+{
+	unsigned char ip_usc[4];
+	
+
 }

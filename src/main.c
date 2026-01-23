@@ -2,14 +2,14 @@
 
 int g_stop = 0;
 
-void handler(int sig)
+void	handler(int sig)
 {
 	printf("\nSignal reçu\n");
 	g_stop = 1;
 	(void) sig;
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	unsigned char buffer[1518];
 	struct sockaddr_ll addr;
@@ -37,12 +37,15 @@ int main(int argc, char **argv)
 		{
 			if (buffer[12] == 8 && buffer[13] == 6)
 			{
-				receive_arp(addr, buffer);
-				fill_arp_reply(buffer, target_mac, source_mac, target_ip, source_ip);
-				sleep(3);
-				sendto(sock, buffer, 42, 0, (struct sockaddr *)&addr, addr_len);
-				close(sock);
-				return 0;
+				if (ft_strncmp(&buffer[28], (unsigned char *)target_ip.s_addr, 4) == 0)
+				{
+					receive_arp(addr, buffer);
+					fill_arp_reply(buffer, target_mac, source_mac, target_ip, source_ip);
+					sleep(3);
+					sendto(sock, buffer, 42, 0, (struct sockaddr *)&addr, addr_len);
+					close(sock);
+					return 0;
+				}
 			}
 		}
 	}
