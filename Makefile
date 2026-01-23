@@ -15,7 +15,7 @@ all: $(OBJS)
 	gcc $(FLAGS) -I./include $(OBJS) -o $(NAME) ./include/libft.a -g
 
 clean:
-	rm -rf *.o
+	rm -rf ./src/*.o
 
 fclean: clean
 	rm -rf $(NAME)
