@@ -39,9 +39,10 @@ int	main(int argc, char **argv)
 			{
 				if (compare_ip(&buffer[28], target_ip) && compare_ip(&buffer[38], source_ip) && compare_mac(&buffer[22], target_mac))
 				{
-					receive_arp(addr, buffer);
+					receive_arp(addr, buffer);	
 					fill_arp_reply(buffer, target_mac, source_mac, target_ip, source_ip);
 					sendto(sock, buffer, 42, 0, (struct sockaddr *)&addr, addr_len);
+					printf("Sent an ARP reply packet, you may now check the arp table on the target.\nExiting program...\n");
 					close(sock);
 					return 0;
 				}

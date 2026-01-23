@@ -134,6 +134,7 @@ void	receive_arp(struct sockaddr_ll addr, unsigned char *buffer)
 	printf("An ARP request has been broadcast.\n");
 	printf("	mac address of request: %02X:%02X:%02X:%02X:%02X:%02X\n", buffer[6], buffer[7],buffer[8],buffer[9],buffer[10],buffer[11]);
 	printf("	IP address of request: %d:%d:%d:%d\n", buffer[28], buffer[29], buffer[30],  buffer[31]);
+	printf("Now sending an ARP reply to the target address with spoofed source, please wait...\n");
 	free(name);
 }
 
