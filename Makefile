@@ -11,7 +11,9 @@ OBJS = $(SRCS:.c=.o)
 %.o: %.c
 	gcc $(FLAGS) -I./include -c $< -o $@
 
-all: $(OBJS)
+all: $(NAME)
+
+$(NAME): $(OBJS)
 	gcc $(FLAGS) -I./include $(OBJS) -o $(NAME) ./include/libft.a -g
 
 clean:
