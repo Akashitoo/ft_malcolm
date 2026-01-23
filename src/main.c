@@ -37,7 +37,7 @@ int	main(int argc, char **argv)
 		{
 			if (buffer[12] == 8 && buffer[13] == 6)
 			{
-				if (ft_strncmp(&buffer[28], (unsigned char *)target_ip.s_addr, 4) == 0)
+				if (compare_ip(&buffer[28], target_ip))
 				{
 					receive_arp(addr, buffer);
 					fill_arp_reply(buffer, target_mac, source_mac, target_ip, source_ip);
